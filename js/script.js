@@ -1,8 +1,9 @@
 const randomFolks = document.querySelector(".random-peeps");
+const selectUserNumber = document.querySelector("#users");
 
 //Pull 5 users from the random user API:
-const getData = async function () {
-    const usersRequest = await fetch("https://randomuser.me/api?results=5");
+const getData = async function (numUsers) {
+    const usersRequest = await fetch(`https://randomuser.me/api?results=${numUsers}`);
     const data = await usersRequest.json();
     //console.log(data);
 
@@ -13,14 +14,14 @@ const getData = async function () {
 
 };
 
-getData();
+getData(1);
 
 //Display the users on the page:
 const displayUsers = function (userResults) {
     //clear the contents of the element, if any
     randomFolks.innerHTML = "";
     //grab the country location, first name, and med-sized pic from the data returned by API
-    for (let user of userResults) {
+    for (const user of userResults) {
         const country = user.location.country;
         const name = user.name.first;
         const imgUrl = user.picture.medium;
@@ -36,3 +37,11 @@ const displayUsers = function (userResults) {
         randomFolks.append(userDiv);
     };
 };
+
+//change event for number of users selection from drop-down
+selectUserNumber.addEventListener("change", function (e) {
+    const numUsers = e.target.value;
+    getData(numUsers);
+});
+
+
